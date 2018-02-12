@@ -158,7 +158,7 @@ def main(input_filename): # a
         #Chequeo que se den la condiciones para issue una nueva inst
         if stall_instruction_buffer == 0 and available_instuction_in_instruction_buffer and available_rob_entry:
             # obtengo y parseo instruccion del buffer
-            instruction = instruction_buffer[(PC/4)]
+            instruction = instruction_buffer[int(PC/4)]
             instruction_parsed = instruction.split(" ")
             instruction_id = instruction_parsed[0]
             # verificar disponibilidad de ER segun el opcode  
@@ -239,7 +239,7 @@ def main(input_filename): # a
                     timing_table.timing_table_add(PC, instruction, cycle_counter)
                     PC = PC + 4
             else:
-                print "Invalid instruction!"
+                print ("Invalid instruction!")
                 exit(1)
  
         # El control del estado de las instrucciones se hace a traves de la ROB
@@ -491,5 +491,5 @@ if __name__ == "__main__":
     if len(argv) > 1:
         main(argv[1]) 
     else:
-        print "Por favor ingrese un archivo de entrada"
+        print ("Por favor ingrese un archivo de entrada")
         exit(1)

@@ -59,13 +59,13 @@ class RSobject:
             
     def rs_no_dependencies(self, rs_name, rob_entry):
 		#returns 1 if all the values are ready and the instruction is ready to execute
-		for rs_entry in self.rs[rs_name]:
-			if rs_entry["dest"] == rob_entry:
-				if rs_entry["busy"] == "no":
-					return 1
-				else:
-					return -1
-		return -1
+        for rs_entry in self.rs[rs_name]:
+            if rs_entry["dest"] == rob_entry:
+                if rs_entry["busy"] == "no":
+                    return 1
+                else:
+                    return -1
+        return -1
 	
     def rs_update_value(self, destination, value):
         # find all the rs entries that use this rob entry as a place holder and update items
@@ -83,10 +83,10 @@ class RSobject:
         
     def rs_get_values(self, rs_name, rob_entry):
 		#returns [vj, vk]
-		for rs_entry in self.rs[rs_name]:
-			if rs_entry["dest"] == rob_entry:
-				return [rs_entry["vj"], rs_entry["vk"]]
-		return -1		
+        for rs_entry in self.rs[rs_name]:
+            if rs_entry["dest"] == rob_entry:
+                return [rs_entry["vj"], rs_entry["vk"]]
+        return -1		
         
     def rs_clear_entry(self, rob_entry):
         for rs_name in ["int_adder_rs", "fp_adder_rs", "fp_multiplier_rs"]:
@@ -96,35 +96,35 @@ class RSobject:
                     return
                 
     def rs_print(self):
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("INTEGER ADDER RS")
-        print "###############################################################################################################################################################"    
+        print ("------------------------------------------------------------------------------------")
+        print ("INTEGER ADDER RS")
+        print ("------------------------------------------------------------------------------------")    
         column_names = ["BUSY", "OP", "DEST", "Vj", "Vk", "Qj", "Qk"]
         row_format ="{:^10}" * len(column_names)
-        print row_format.format(*column_names)
+        print (row_format.format(*column_names))
         for rs_entry in self.rs["int_adder_rs"]:
             rs_entry_list = [rs_entry["busy"], rs_entry["op"], rs_entry["dest"], rs_entry["vj"], rs_entry["vk"], rs_entry["qj"], rs_entry["qk"]]
-            print row_format.format(*rs_entry_list)
+            print (row_format.format(*rs_entry_list))
         print   
         
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("FLOATING POINT ADDER RS")
-        print "###############################################################################################################################################################"    
+        print ("------------------------------------------------------------------------------------")
+        print ("FLOATING POINT ADDER RS")
+        print ("------------------------------------------------------------------------------------")    
         column_names = ["BUSY", "OP", "DEST", "Vj", "Vk", "Qj", "Qk"]
         row_format ="{:^10}" * len(column_names)
-        print row_format.format(*column_names)
+        print (row_format.format(*column_names))
         for rs_entry in self.rs["fp_adder_rs"]:
             rs_entry_list = [rs_entry["busy"], rs_entry["op"], rs_entry["dest"], rs_entry["vj"], rs_entry["vk"], rs_entry["qj"], rs_entry["qk"]]
-            print row_format.format(*rs_entry_list)
+            print (row_format.format(*rs_entry_list))
         print     
         
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("FLOATING POINT MULTIPLIER RS")
-        print "###############################################################################################################################################################"    
+        print ("------------------------------------------------------------------------------------")
+        print ("FLOATING POINT MULTIPLIER RS")
+        print ("------------------------------------------------------------------------------------")    
         column_names = ["BUSY", "OP", "DEST", "Vj", "Vk", "Qj", "Qk"]
         row_format ="{:^10}" * len(column_names)
-        print row_format.format(*column_names)
+        print (row_format.format(*column_names))
         for rs_entry in self.rs["fp_multiplier_rs"]:
             rs_entry_list = [rs_entry["busy"], rs_entry["op"], rs_entry["dest"], rs_entry["vj"], rs_entry["vk"], rs_entry["qj"], rs_entry["qk"]]
-            print row_format.format(*rs_entry_list)
+            print (row_format.format(*rs_entry_list))
         print

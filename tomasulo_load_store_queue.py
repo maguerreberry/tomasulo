@@ -137,13 +137,13 @@ class LSQobject:
         return -1
 
     def lsq_print(self):
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("LOAD STORE QUEUE")
-        print "###############################################################################################################################################################"    
+        print ("------------------------------------------------------------------------------------")
+        print ("LOAD STORE QUEUE")
+        print ("------------------------------------------------------------------------------------")    
         column_names = ["DEST", "TYPE", "VSD", "QSD", "VAddr", "QAddr", "CONST", "ADDR", "VAL", "FWD"]
         row_format ="{:^16}" * len(column_names)
-        print row_format.format(*column_names)
+        print (row_format.format(*column_names))
         for index, lsq_entry in enumerate(self.lsq):
             lsq_entry_list = [lsq_entry["dest"], lsq_entry["type"], lsq_entry["vj"], lsq_entry["qj"], lsq_entry["vk"], lsq_entry["qk"], lsq_entry["constant"], lsq_entry["address"], lsq_entry["value"], lsq_entry["fwd"]]
-            print row_format.format(*lsq_entry_list)
+            print (row_format.format(*lsq_entry_list))
         print  

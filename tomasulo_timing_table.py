@@ -35,13 +35,13 @@ class TTobject:
             return -1
         
     def time_table_print(self):
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("TIMING TABLE")
-        print "###############################################################################################################################################################"    
-        column_names = [ "PC", "INSTRUCTION", "ISSUE", "EX_S", "EX_F", "MEM_S", "MEM_F", "WB", "COMMIT_S", "COMMIT_F"]
+        print ("------------------------------------------------------------------------------------")
+        print ("TABLA DE TIEMPOS")
+        print ("------------------------------------------------------------------------------------")    
+        column_names = [ "PC", "INSTRUCCION", "ISSUE", "EX_S", "EX_F", "MEM_S", "MEM_F", "WB", "COMMIT_S", "COMMIT_F"]
         row_format ="{:^16}" * len(column_names)
-        print row_format.format(*column_names)
+        print (row_format.format(*column_names))
         for tt_entry in self.timing_table:
             tt_entry_list = [tt_entry["PC"], tt_entry["instruction"], tt_entry["ISSUE"], tt_entry["EX_START"], tt_entry["EX_FINISH"], tt_entry["MEM_START"], tt_entry["MEM_FINISH"], tt_entry["WB"], tt_entry["COMMIT_START"], tt_entry["COMMIT_FINISH"]]
-            print row_format.format(*tt_entry_list)
+            print (row_format.format(*tt_entry_list))
         print

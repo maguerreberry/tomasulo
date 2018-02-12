@@ -23,23 +23,23 @@ class MEMobject:
         return self.memory[int(int(addr)/4)]
         
     def mem_print(self):
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("MEMORY")
-        print "###############################################################################################################################################################"
+        print ("------------------------------------------------------------------------------------")
+        print ("MEMORY")
+        print ("------------------------------------------------------------------------------------")
         row_format ="{:^10}" * 16
-        print row_format.format(*self.memory[0:16])
-        print row_format.format(*self.memory[16:32])
-        print row_format.format(*self.memory[32:48])
-        print row_format.format(*self.memory[48:64])
+        print (row_format.format(*self.memory[0:16]))
+        print (row_format.format(*self.memory[16:32]))
+        print (row_format.format(*self.memory[32:48]))
+        print (row_format.format(*self.memory[48:64]))
         print
         
     def mem_print_non_zero_values(self):
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("NON-ZERO MEMORY VALUES")
-        print "###############################################################################################################################################################"
+        print ("------------------------------------------------------------------------------------")
+        print ("VALORES DE MEMORIA DISTINTOS DE CERO")
+        print ("------------------------------------------------------------------------------------")
         row_format ="{:^10}" * 2
-        print row_format.format(*["ADDRESS", "VALUE"])
+        print (row_format.format(*["DIRECCION", "VALOR"]))
         for address, word in enumerate(self.memory):
             if word != 0:
-                print row_format.format(*["0x%x" % (address*4), word])
+                print (row_format.format(*["0x%x" % (address*4), word]))
         print

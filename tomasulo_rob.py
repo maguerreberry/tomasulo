@@ -44,7 +44,7 @@ class ROBobject:
             self.rob_total_entries = self.rob_total_entries + 1 # increment total number of entries 
             return return_value
         else:
-            print "ROB full!"
+            print ("ROB full!")
             return -1 
     
     def rob_available(self):
@@ -142,13 +142,13 @@ class ROBobject:
             return "ROB" + str(rob_index)
     
     def rob_print(self):
-        print "###############################################################################################################################################################"
-        print "{:^159}".format("ROB")
-        print "###############################################################################################################################################################"    
+        print ("------------------------------------------------------------------------------------")
+        print ("ROB")
+        print ("------------------------------------------------------------------------------------")    
         column_names = ["", "BUSY", "INSTRUCTION", "STATE", "DESTINATION", "VALUE"]
         row_format ="{:^16}" * len(column_names)
-        print row_format.format(*column_names)
+        print (row_format.format(*column_names))
         for index, rob_entry in enumerate(self.rob):
             rob_entry_list = ["ROB"+str(index), rob_entry["busy"], rob_entry["instruction"], rob_entry["state"], rob_entry["destination"], rob_entry["value"]]
-            print row_format.format(*rob_entry_list)
+            print (row_format.format(*rob_entry_list))
         print   
