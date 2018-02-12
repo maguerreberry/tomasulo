@@ -61,15 +61,11 @@ class ROBobject:
             return -1
     
     def rob_check_if_ready_to_commit(self):
-        #use busy flag to check if top entry is ready 
-        #rob_check_counter points to the oldest/top instruction
+        #rob_check_counter es una puntero que controla hasta donde se hizo commit, en base al puntero obtenfo una entrada para commit
 
         if self.rob_total_entries != 0 and self.rob[self.rob_check_counter]["busy"] == "no":
-            #if ready to commit -> clear entry and return [destination, value]
             # return_value = [tt_index, destination, value, instruction_id, rob_entry_name]
             return_value = [self.rob[self.rob_check_counter]["timing_table_entry_index"], self.rob[self.rob_check_counter]["destination"], self.rob[self.rob_check_counter]["value"], self.rob[self.rob_check_counter]["instruction"].split(" ")[0], "ROB"+str(self.rob_check_counter)]
-            #print "ROB" + str(self.rob_check_counter) + " is ready to commit"           
-            #print return_value
             return return_value
         else:
             return -1
@@ -99,10 +95,10 @@ class ROBobject:
         return self.rob[int(rob_entry.split("ROB")[1])]["state"]
             
     def rob_update_value(self, rob_entry, rs_value):
-        #use reservation stations to update rob when instructions have completed
+        #Saco el valor del registro de las estaciones de reserva
         rob_update_index = int(rob_entry.split("ROB")[1])
         self.rob[rob_update_index]["value"] = rs_value
-        #specify that ROB is ready
+        # Aviso que esta entrada de la ROB esta lista para commit
         self.rob[rob_update_index]["busy"] = "no"
         
     def rob_update_state(self, rob_entry, rs_state):

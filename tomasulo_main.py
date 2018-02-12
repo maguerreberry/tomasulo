@@ -270,7 +270,6 @@ def main(input_filename): # a
                     #Actualizo ROB
                     rob.rob_update_state(rob_entry, "WB")
                     timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "WB", cycle_counter, 1)
-
             elif rob_entry_state == "EX" and rob_entry_instruction_id == "LD":  
                 #---------------------------------------------------------------------
                 # EX -> MEM
@@ -302,10 +301,10 @@ def main(input_filename): # a
                     if rob_entry_instruction_id in ["ADD", "ADDI", "SUB", "ADD.D", "SUB.D", "MULT.D"]:
                         cdb_in_use = 1
                         if rob_entry_instruction_id in ["ADD", "ADDI"]:
-                            # perform addition
+                            # hago la suma
                             values = rs.rs_get_values("int_adder_rs", rob_entry)
                             result = values[0] + values[1]
-                            # add result to cdb buffer                        
+                            # escribo el resulatdo en CDB                      
                             cdb_buffer = [rob_entry, result]
                         elif rob_entry_instruction_id in ["SUB"]:
                             # perform subtraction
@@ -333,10 +332,8 @@ def main(input_filename): # a
                             cdb_buffer = [rob_entry, result]
                         # Vacio la ER
                         rs.rs_clear_entry(rob_entry)
-                        # update rob state
                         rob.rob_update_state(rob_entry, "WB")
-                        # update timing table
-                        #print "WB FOR " + rob_entry + ": " + str(cycle_counter)
+
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "WB", cycle_counter, 1)
                     elif rob_entry_instruction_id in ["SD"]:
                         #Cuando el valor esta listo para escribir se advierte a la ROB, y desde la ROB se escribe la memoria
@@ -353,69 +350,47 @@ def main(input_filename): # a
                 # ISSUE -> EX
                 #---------------------------------------------------------------------            
                 if rob_entry_instruction_id in ["ADD", "ADDI"]:
-                    # find rs entry (by using ROB entry name)
+                    # me fijo en las estaciones de reserva si esta lista la instaruccion para ejecutar
                     no_dependencies = (rs.rs_no_dependencies("int_adder_rs", rob_entry) != -1)
                     if no_dependencies and available_int_fu != 0:
-                        # decrement available_int_fu
+                        # utlizo una unidad funcional
                         available_int_fu = available_int_fu - 1
-                        #print "DECREASE AVAILABLE INT FU " + str(available_int_fu)
                         #update stage info in rob
                         rob.rob_update_state(rob_entry, "EX")
                         #update stage infor in tt
-                        #print "EX FOR " + rob_entry + ": ADD/ADDI STARTS IN CYCLE " + str(cycle_counter) + " AND ENDS IN CYCLE " + str(cycle_counter + int_adder_properties["cycles_in_ex"]-1)
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, int_adder_properties["cycles_in_ex"])
-                        #add a timer for int adder instruction unit
+                        #stero el contador de ciclos de EX
                         int_adder_fu_timer.append(cycle_counter + int_adder_properties["cycles_in_ex"])
                 elif rob_entry_instruction_id in ["SUB"]:
-					# find rs entry (by using ROB entry name)
                     no_dependencies = (rs.rs_no_dependencies("int_adder_rs", rob_entry) != -1)
                     if no_dependencies and available_int_fu != 0:
-						# decrement available_int_fu
                         available_int_fu = available_int_fu - 1
-                        #print "DECREASE AVAILABLE INT FU: " + str(available_int_fu)
                         #update stage info in rob
                         rob.rob_update_state(rob_entry, "EX")
-                        #update stage infor in tt
-                        #print "EX FOR " + rob_entry + ": SUB STARTS IN CYCLE " + str(cycle_counter) + " AND ENDS IN CYCLE " + str(cycle_counter + int_adder_properties["cycles_in_ex"]-1)
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, int_adder_properties["cycles_in_ex"])
                         int_adder_fu_timer.append(cycle_counter + int_adder_properties["cycles_in_ex"])
                 elif rob_entry_instruction_id == "ADD.D":
-					# find rs entry (by using ROB entry name)
+					
                     no_dependencies = (rs.rs_no_dependencies("fp_adder_rs", rob_entry) != -1)
                     if no_dependencies and available_fp_adder_fu != 0:
-						# decrement available_fp_adder_fu
                         available_fp_adder_fu = available_fp_adder_fu - 1
-                        #update stage info in rob
                         rob.rob_update_state(rob_entry, "EX")
-                        #update stage infor in tt
-                        #print "EX FOR " + rob_entry + ": ADD.D STARTS IN CYCLE " + str(cycle_counter) + " AND ENDS IN CYCLE " + str(cycle_counter + fp_adder_properties["cycles_in_ex"]-1)
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, fp_adder_properties["cycles_in_ex"])
                 elif rob_entry_instruction_id == "SUB.D":
-					# find rs entry (by using ROB entry name)
+					
                     no_dependencies = (rs.rs_no_dependencies("fp_adder_rs", rob_entry) != -1)
                     if no_dependencies and available_fp_adder_fu != 0:
-						# decrement available_fp_adder_fu
                         available_fp_adder_fu = available_fp_adder_fu - 1
-                        #update stage info in rob
                         rob.rob_update_state(rob_entry, "EX")
-                        #update stage infor in tt
-                        #print "EX FOR " + rob_entry + ": SUB.D STARTS IN CYCLE " + str(cycle_counter) + " AND ENDS IN CYCLE " + str(cycle_counter + fp_adder_properties["cycles_in_ex"]-1)
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, fp_adder_properties["cycles_in_ex"])
                 elif rob_entry_instruction_id == "MULT.D":
-					# find rs entry (by using ROB entry name)
                     no_dependencies = (rs.rs_no_dependencies("fp_multiplier_rs", rob_entry) != -1)
                     if no_dependencies and available_fp_mult_fu != 0:
-						# decrement available_fp_mult_fu
                         available_fp_mult_fu = available_fp_mult_fu - 1
-                        #update stage info in rob
                         rob.rob_update_state(rob_entry, "EX")
-                        #update stage infor in tt
-                        #print "EX FOR " + rob_entry + ": SUB.D STARTS IN CYCLE " + str(cycle_counter) + " AND ENDS IN CYCLE " + str(cycle_counter + fp_multiplier_properties["cycles_in_ex"]-1)
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, fp_multiplier_properties["cycles_in_ex"])
                 elif rob_entry_instruction_id in ["SD", "LD"]: # Calculo direcciones
                     no_dependencies = (lsq.lsq_addr_reg_ready(rob_entry) != -1)
-                    #print "NO DEPENDENCIES: " + str(no_dependencies)
-                    #print "available ls fu: " + str(available_ls_fu)
                     if no_dependencies and available_ls_fu != 0:
                         #Utlizo la unidad funcional para calcular la direccion
                         available_ls_fu = available_ls_fu - 1
@@ -430,35 +405,34 @@ def main(input_filename): # a
                         rob.rob_update_state(rob_entry, "EX")
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, load_store_unit_properties["cycles_in_ex"])
                         
-            rob_entry = rob.rob_next(rob_entry, rob_dest) # get next rob entry
+            rob_entry = rob.rob_next(rob_entry, rob_dest) # obtengo la proxima entrada en a rob para analizar
         
         #---------------------------------------------------------------------
         # WB -> COMMIT STAGE
         #---------------------------------------------------------------------
         rob_entry_data = rob.rob_check_if_ready_to_commit() 
+        #rob_entry_data = [tt_index, destination, value, instruction_id, rob_entry_name]
+
         if rob_entry_data != -1:
             if rob_entry_data[3] in ["ADD", "ADDI", "SUB", "ADD.D", "SUB.D", "MULT.D", "LD"]: 
-                #clear rob entry
+                #CMuevo el puntero de commit 
                 rob.rob_commit() # [tt_index, destination, value, instruction_id, rob_entry_name]
                 cycles_in_commit = 1
-                #set arf buffer
-                arf_buffer = [rob_entry_data[1], rob_entry_data[2]] # [destination, value]
-                #if rat still points to this ROB entry -> clean it up
+                #Escribo registros en el buffer ARF
+                arf_buffer = [rob_entry_data[1], rob_entry_data[2]] # [reg_dest, valor]
+
+                #Si hay una entrada en la RAT que apunta hacia este ROB, la borro
                 if rat.rat_get(rob_entry_data[1]) == rob_entry_data[4]:
                     rat.rat_update(rob_entry_data[1], rob_entry_data[1])
-                #update timing table
                 timing_table.timing_table_update(rob_entry_data[0], "COMMIT", cycle_counter, cycles_in_commit)    
-                #print "COMMIT FOR " + rob_entry_data[4] + ": STARTS IN CYCLE " + str(cycle_counter) + " AND ENDS IN CYCLE " + str(cycle_counter + cycles_in_commit - 1)
             elif rob_entry_data[3] == "SD" and memory_is_in_use == 0:
-                #clear rob entry
-                rob.rob_commit() # [tt_index, destination, value, instruction_id, rob_entry_name]
+                rob.rob_commit() 
                 cycles_in_commit = 1
-                #set memory_buffer
-                memory_buffer = [rob_entry_data[1], rob_entry_data[2], rob_entry_data[4]] # [destination, value, rob_entry]
+                #Escribo el buffer de memoria
+                memory_buffer = [rob_entry_data[1], rob_entry_data[2], rob_entry_data[4]] 
+                #Ocupo la memoria
                 cycles_in_commit = load_store_unit_properties["cycles_in_mem"]
-                #set memory in use
                 memory_is_in_use = load_store_unit_properties["cycles_in_mem"]                
-                #update timing table
                 timing_table.timing_table_update(rob_entry_data[0], "COMMIT", cycle_counter, cycles_in_commit)
 
 ############################################################################################################
