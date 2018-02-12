@@ -12,7 +12,7 @@ import tomasulo_timing_table
 import tomasulo_load_store_queue
 
 # PARAMETROS GLOBALES
-num_rob_entries = 128 
+num_rob_entries = 20 
 int_adder_properties = {
     "num_rs" : 2,
     "cycles_in_ex" : 1,
@@ -85,12 +85,13 @@ def main(input_filename): # a
     #-------------------------------------------------
     PC = 0 # Contador de programa, incrementado en 4
     cycle_counter = 0
+
     while(1):
 		#ACTUALIZACION DE CLOCK
-        cycle_counter = cycle_counter + 1
+        cycle_counter = cycle_counter + 1		
         available_fp_adder_fu = fp_adder_properties["num_fus"] 
         available_fp_mult_fu = fp_multiplier_properties["num_fus"] 
-		
+        
         # Actualiza el estado de la memoria, memory_buffer se llena en la ints de store
         if memory_is_in_use != 0:
             memory_is_in_use = memory_is_in_use - 1
@@ -396,7 +397,7 @@ def main(input_filename): # a
                         available_ls_fu = available_ls_fu - 1
 						# calcualo la direccion
                         values = lsq.lsq_get_address_values(rob_entry)
-                        ls_address = int(values[0])*4 + int(values[1])
+                        ls_address = (int(values[0]) + int(values[1])) * 4
                         # Actualizacion de direcciones de load y store a traves de la_buffer
                         ls_buffer.append({"destination" : rob_entry, "address" : ls_address, "ready_cycle" : cycle_counter + load_store_unit_properties["cycles_in_ex"]}.copy())
                         # actualizo la entrada en ROB
