@@ -1,8 +1,3 @@
-int_adder 2 1 1
-fp_adder 3 3 1
-fp_multiplier 2 20 1
-load_store_unit 3 1 4 1
-rob_entries 10
 Reg F1 7.8
 Reg F2 0
 Reg F3 0
