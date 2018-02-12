@@ -1,3 +1,10 @@
 .idea/*
 *.pyc
 .vscode/*
+latex/Informe_Tomasulo.log
+latex/Informe_Tomasulo.aux
+latex/Informe_Tomasulo.fdb_latexmk
+latex/Informe_Tomasulo.fls
+latex/Informe_Tomasulo.out
+latex/Informe_Tomasulo.pdf
+latex/Informe_Tomasulo.synctex.gz

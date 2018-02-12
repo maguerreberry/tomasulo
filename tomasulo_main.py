@@ -20,12 +20,12 @@ int_adder_properties = {
 }
 fp_adder_properties = {
     "num_rs" : 3,
-    "cycles_in_ex" : 3,
+    "cycles_in_ex" : 4,
     "num_fus" : 1
 }
 fp_multiplier_properties = {
     "num_rs" : 2,
-    "cycles_in_ex" : 20,
+    "cycles_in_ex" : 8,
     "num_fus" : 1
 }
 load_store_unit_properties = {
