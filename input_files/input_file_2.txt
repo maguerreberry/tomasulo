@@ -1,12 +1,12 @@
-reg R1 0
-reg R2 3
-reg R3 2
-reg R4 0
-reg F1 0
-reg F2 1.1
-reg F3 2.5
-reg F4 0.0
-mult.d F1 F2 F3
-mult.d F4 F1 F2
-add R1 R2 R3
-sub R4 R2 R3
+mem 4 3.3
+mem 8 2.2
+mem 12 3.4
+mem 16 5.5
+ld F1 1(R0)
+ld F2 2(R0)
+ld F3 3(R0)
+ld F4 4(R0)
+add.d F5 F1 F2
+add.d F6 F5 F3
+Sd F5 20(R0)
+Sd F6 24(R0)
