@@ -132,15 +132,17 @@ def main(input_filename): # a
                     del load_inst_ready_to_dequeue[index]
         
         #############################
-        #P DEBUG TABLAS EN CADA CICLO DE CLOCK
+        #PARA DEBUG TABLAS EN CADA CICLO DE CLOCK
         #############################
-        #rob.rob_print()
-        #rs.rs_print()
-        #lsq.lsq_print()
-        #timing_table.time_table_print()
-        #memory.mem_print_non_zero_values()
-        #arf.reg_print()
-        #rat.rat_print()
+        rob.rob_print()
+        rs.rs_print()
+        lsq.lsq_print()
+        timing_table.time_table_print()
+        memory.mem_print_non_zero_values()
+        arf.reg_print()
+        rat.rat_print()
+        print("Ciclo =", cycle_counter-1, "PC =", PC)
+        input()
         
         # Imprimir resultados cuando se vacia la ROB y hemos leido todas la  instrucciones
         if (rob.rob_empty() == 1) and ((PC/4) >= len(instruction_buffer)) and (memory_is_in_use == 0):
@@ -393,7 +395,6 @@ def main(input_filename): # a
                 elif rob_entry_instruction_id in ["SD", "LD"]: # Calculo direcciones
                     no_dependencies = (lsq.lsq_addr_reg_ready(rob_entry) != -1)
                     if no_dependencies and available_ls_fu != 0:
-                        #Utlizo la unidad funcional para calcular la direccion
                         available_ls_fu = available_ls_fu - 1
 						# calcualo la direccion
                         values = lsq.lsq_get_address_values(rob_entry)

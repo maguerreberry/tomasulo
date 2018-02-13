@@ -87,10 +87,16 @@
 	\begin{figure}[H]		
 		\centering
 		\includegraphics[width=.7\textwidth]{figures/objetos.png}
-		\caption{\label{fig:objetos}Diagrama de objetos.}
+		\caption{\label{fig:objetos}Diagrama de objetos. Detalle de los campos de las entradas de las respectivas tablas.}
 	\end{figure}
 
 	\subsection*{Secuencia}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{figures/main.png}
+		\caption{\label{fig:main}Diagrama de secuencia global.}
+	\end{figure}
 
 	\begin{figure}[H]
 		\centering
@@ -110,6 +116,17 @@
 		\caption{\label{fig:ex_wb}Diagrama de secuencia. EX a WB.}
 	\end{figure}
 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{figures/mem_wb.png}
+		\caption{\label{fig:mem_wb}Diagrama de secuencia. MEM a WB.}
+	\end{figure}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{figures/wb_commit.png}
+		\caption{\label{fig:wb_commit}Diagrama de secuencia. WB a COMMIT.}
+	\end{figure}
 	
 	\section{Verificación y Validación}
 
@@ -178,7 +195,7 @@
 		\end{tabular}
 	\end{table}
 
-	\subsubsection*{Resultados Reales}
+	\subsubsection*{Resultados del simulador}
 
 	\begin{figure}[H]
 	\centering
@@ -261,7 +278,7 @@
 		\end{tabular}
 	\end{table}
 
-	\subsubsection*{Resultados Reales}
+	\subsubsection*{Resultados del simulador}
 
 	\begin{figure}[H]
 	\centering
@@ -298,10 +315,10 @@
 		\centering
 		\caption*{Caso 3: Instrucciones}
 		\begin{tabular}{l}
-		mult.d F1 F2 F3 \\
-		mult.d F4 F1 F2 \\
-		add R1 R2 R3 \\
-		sub R4 R2 R3
+			Sd F1 1(R0) \\
+			Ld F2 1(R0) \\
+			Ld F3 1(R0) \\
+			Ld F4 1(R0)
 		\end{tabular}
 	\end{table}
 
@@ -333,7 +350,7 @@
 		\end{tabular}
 	\end{table}
 
-	\subsubsection*{Resultados Reales}
+	\subsubsection*{Resultados del simulador}
 
 	\begin{figure}[H]
 	\centering
@@ -345,8 +362,7 @@
 	\subsection*{Caso de prueba 4}
 
 	\begin{itemize}
-		\item Dependencia de datos entre la operacion de suma y el store. 
-		\item Dependencia estructural en el common data bus. La operacion de suma flotante tiene más prioridad. 
+		\item Los operandos de la instrucción store, ambos depende de resutlados de operaciones anteriores, la suma flotante y la suma de enteros. 
 	\end{itemize}
 
 	\subsubsection*{Procedimiento}
@@ -409,7 +425,7 @@
 		\end{tabular}
 	\end{table}
 
-	\subsubsection*{Resultados Reales}
+	\subsubsection*{Resultados del simulador}
 
 	\begin{figure}[H]
 	\centering
@@ -486,7 +502,7 @@
 		\end{tabular}
 	\end{table}
 
-	\subsubsection*{Resultados Reales}
+	\subsubsection*{Resultados del simulador}
 
 \begin{figure}[H]
 	\centering
