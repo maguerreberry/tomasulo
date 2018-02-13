@@ -9,34 +9,32 @@ class LSQobject:
     def lsq_initialize(self, num_load_store_rs):
         self.lsq_size = num_load_store_rs
     
+    #Indica si quedan entradaas libres en RS de load y store
     def lsq_available(self):
         if len(self.lsq) < self.lsq_size:
             return 1
         else:
             return -1
     
+    #Agrego una entrada a la LSQ
     def lsq_add(self, ls_instr, ls_constant, ls_addr_val, ls_addr_reg, store_val, store_reg, rob_dest):
-        #add an entry in the queue if its not full:
-        #    1) LOAD  -> addr (until EX stage) and value (until MEM stage unless forwarding) are NOT ready
-        #    2) STORE -> addr (until EX stage) is NOT ready, value readiness depends on data dependencies
-        #when a LOAD entry is added, run through queue to see if older STORE instr (with same addr) will forward
-        #   -> which earlier STORE do I get my value from?
+        #    1) LOAD  -> direccion (hasta EX) and valor (hasta MEM a menos que ocurra fwd) NO estan listos
+        #    2) STORE -> direccion (hasta EX) no esta lista, el valor depende de los registros a los que haga referncia
 
         if len(self.lsq) < self.lsq_size:
             lsq_entry = { 
-                "type" : ls_instr,    #Load or Store instruction (LD or SD)
-                "dest" : rob_dest,   #rob entry destination
-                "vj" : store_val,    #only used by store instruction for register that holds value to be stored in mem
-                "qj" : store_reg,    #only used by store instruction for register that holds value to be stored in mem
-                "vk" : ls_addr_val,    #Address register
-                "qk" : ls_addr_reg,    #Address register dependency for V_k
+                "type" : ls_instr,    #(LD o SD)
+                "dest" : rob_dest,   #Destino en la ROB
+                "vj" : store_val,    #Valor a guardar en instruccion de SD
+                "qj" : store_reg,    #Tag al valor a guardar en SD
+                "vk" : ls_addr_val,    #registro de direccion
+                "qk" : ls_addr_reg,    #Tag al registro de direccion
                 "constant" : ls_constant,
                 "address" : "-",
-                "value" : "-", #value brought back from memory if it's load instruction
-                "fwd" : "-"}    #Set flag if forwarding used 
+                "value" : "-", #valor traido de memoria en un LOAD
+                "fwd" : "-"}    #Indica si se utiilizo FWD
             self.lsq.append(lsq_entry.copy())
         else:
-            #print "Load-Store Queue full!"
             return -1
     
     def lsq_get_store_val(self, rob_entry):

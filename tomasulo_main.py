@@ -166,7 +166,6 @@ def main(input_filename): # a
             if instruction_id in ["ADD", "ADDI", "SUB"]:
                 available_rs_entry = (rs.rs_available("int_adder_rs") != -1)
                 if available_rs_entry:
-
                     # Chequear si tenemos los valores de qj y qk para ingresar a las estaciones de reserva
                     reg1 = get_current_reg_info(instruction_parsed[2]) # reg_name
                     if instruction_id in ["ADDI"]:
@@ -224,14 +223,15 @@ def main(input_filename): # a
             elif instruction_id in ["LD"]:
                 available_rs_entry = (lsq.lsq_available() != -1)
                 if available_rs_entry:
-                    # add entry
-                    #check if we have the needed values
+                    
                     addr_reg = get_current_reg_info(instruction_parsed[2].split("(")[1].split(")")[0]) # reg_name
                     constant = instruction_parsed[2].split("(")[0]
-                    #specific to SD
+
+                    #solo validos para SD
                     source_reg = ["-", "-"] # pq no obtenes valor de un registro 
                     rob_dest = rob.rob_instr_add(instruction, instruction_parsed[1], timing_table_entry_index)
                     timing_table_entry_index = timing_table_entry_index + 1
+
                     #update rat
                     rat.rat_update(instruction_parsed[1], rob_dest) # need to update rat
                     #add entry to lsq
@@ -349,7 +349,7 @@ def main(input_filename): # a
                 #---------------------------------------------------------------------
                 # ISSUE -> EX
                 #---------------------------------------------------------------------            
-                if rob_entry_instruction_id in ["ADD", "ADDI"]:
+                if rob_entry_instruction_id in ["ADD", "ADDI", "SUB"]:
                     # me fijo en las estaciones de reserva si esta lista la instaruccion para ejecutar
                     no_dependencies = (rs.rs_no_dependencies("int_adder_rs", rob_entry) != -1)
                     if no_dependencies and available_int_fu != 0:
@@ -361,23 +361,7 @@ def main(input_filename): # a
                         timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, int_adder_properties["cycles_in_ex"])
                         #stero el contador de ciclos de EX
                         int_adder_fu_timer.append(cycle_counter + int_adder_properties["cycles_in_ex"])
-                elif rob_entry_instruction_id in ["SUB"]:
-                    no_dependencies = (rs.rs_no_dependencies("int_adder_rs", rob_entry) != -1)
-                    if no_dependencies and available_int_fu != 0:
-                        available_int_fu = available_int_fu - 1
-                        #update stage info in rob
-                        rob.rob_update_state(rob_entry, "EX")
-                        timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, int_adder_properties["cycles_in_ex"])
-                        int_adder_fu_timer.append(cycle_counter + int_adder_properties["cycles_in_ex"])
-                elif rob_entry_instruction_id == "ADD.D":
-					
-                    no_dependencies = (rs.rs_no_dependencies("fp_adder_rs", rob_entry) != -1)
-                    if no_dependencies and available_fp_adder_fu != 0:
-                        available_fp_adder_fu = available_fp_adder_fu - 1
-                        rob.rob_update_state(rob_entry, "EX")
-                        timing_table.timing_table_update(rob.rob_get_tt_index(rob_entry), "EX", cycle_counter, fp_adder_properties["cycles_in_ex"])
-                elif rob_entry_instruction_id == "SUB.D":
-					
+                elif rob_entry_instruction_id in ["ADD.D", "SUB.D"]:
                     no_dependencies = (rs.rs_no_dependencies("fp_adder_rs", rob_entry) != -1)
                     if no_dependencies and available_fp_adder_fu != 0:
                         available_fp_adder_fu = available_fp_adder_fu - 1
