@@ -60,9 +60,8 @@ class ROBobject:
         else:
             return -1
     
+    #rob_check_counter es una puntero que controla hasta donde se hizo commit, en base al puntero obtengo una entrada para commit
     def rob_check_if_ready_to_commit(self):
-        #rob_check_counter es una puntero que controla hasta donde se hizo commit, en base al puntero obtenfo una entrada para commit
-
         if self.rob_total_entries != 0 and self.rob[self.rob_check_counter]["busy"] == "no":
             # return_value = [tt_index, destination, value, instruction_id, rob_entry_name]
             return_value = [self.rob[self.rob_check_counter]["timing_table_entry_index"], self.rob[self.rob_check_counter]["destination"], self.rob[self.rob_check_counter]["value"], self.rob[self.rob_check_counter]["instruction"].split(" ")[0], "ROB"+str(self.rob_check_counter)]
@@ -113,21 +112,21 @@ class ROBobject:
         rob_update_index = int(rob_entry.split("ROB")[1])
         return self.rob[rob_update_index]["timing_table_entry_index"]        
 
+    #Devuelve la proxima entrada pra hacer commit de la ROB
     def rob_head_node(self, instruction_issue_indicator):
-        # return commit entry de la ROB, -1 if rob table is empty
         if self.rob_add_counter == 0:
             rob_add_counter_previous = len(self.rob) - 1
         else:
             rob_add_counter_previous = self.rob_add_counter - 1
-        if (self.rob_total_entries == 0) or (instruction_issue_indicator != "-" and self.rob_check_counter == rob_add_counter_previous): #returns -1 if there ROB is empty or contains an instruction that was just issued
+        if (self.rob_total_entries == 0) or (instruction_issue_indicator != "-" and self.rob_check_counter == rob_add_counter_previous): #returns -1 si la ROB esta vacia
             return -1
         else:
             return "ROB" + str(self.rob_check_counter)
         
+    #Devuelve la proxima entrada a la ROB ocuapara repecto a rob_entry
     def rob_next(self, rob_entry, instruction_issue_indicator):
-        # if rob_entry = ROB1, rob_next will return ROB2 if this entry is occupied
         rob_index = int(rob_entry.split("ROB")[1])
-        if rob_index == len(self.rob) - 1: # rotate ROB current entry counter
+        if rob_index == len(self.rob) - 1:
                 rob_index = 0
         else:
             rob_index = rob_index + 1
@@ -136,7 +135,7 @@ class ROBobject:
         else:
             rob_add_counter_previous = self.rob_add_counter - 1
         
-        if (rob_index == self.rob_add_counter) or (instruction_issue_indicator != "-" and rob_index == rob_add_counter_previous): #returns -1 if there is no more ROB entries
+        if (rob_index == self.rob_add_counter) or (instruction_issue_indicator != "-" and rob_index == rob_add_counter_previous): 
             return -1
         else:
             return "ROB" + str(rob_index)
